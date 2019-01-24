@@ -24,6 +24,8 @@ li {
     margin:5px;
 }
 
+li .checked
+
 header {
     background-color: #25AE88;
 }
@@ -58,6 +60,28 @@ h1 {
 #addNewItem {
     
 }
+
+.item {
+    float: left;
+}
+
+.icons {
+    float: right;
+}
+
+.bin-closed, .checkButton {
+    height: 20px;
+}
+
+.list-item {
+    min-height: 30px;
+    padding: 5px;
+}
+
+#checked {
+    text-decoration: line-through;
+}
+
 
 
 @media screen and (max-width:600px) {
