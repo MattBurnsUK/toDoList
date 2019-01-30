@@ -10,13 +10,23 @@ var clickHappened = false;
 var retrievedListItems = JSON.parse(localStorage.getItem("storedListItems"));
 
 // Display all of the list items retrieved from local storage
-
-//console.log(retrievedListItems);
 for (let l = 0; l < retrievedListItems.length; l++){
     console.log(retrievedListItems[l]);
     var node = document.createElement("LI");
     var listItem = document.createTextNode(retrievedListItems[l]);
     node.appendChild(listItem);
+    var icons = document.createElement("div");
+    icons.setAttribute('class','icons');
+    var binIcon = document.createElement("img");
+    var checkIcon = document.createElement("img");
+    binIcon.setAttribute('src', 'bin-closed.png');
+    binIcon.setAttribute('class','bin-closed');
+    checkIcon.setAttribute('src','http://localhost/to-do-list/unchecked.png');
+    checkIcon.setAttribute('class','checkButton');
+    icons.appendChild(binIcon);
+    icons.appendChild(checkIcon);
+    node.appendChild(icons);
+    node.setAttribute('class','list-item');
     theList.appendChild(node);
 }
 
@@ -53,6 +63,12 @@ for (let i=0; i<theBin.length; i++){
     theBin[i].onclick = function(e){
         let listItem = e.target.parentElement.parentElement;
         theList.removeChild(listItem);
+        // update the array to remove the clicked item
+        
+        
+       // retrievedListItems.shift(listItem);
+        // update local storage with the new array
+        localStorage.setItem("storedListItems", JSON.stringify(retrievedListItems));
     }
 }
 
