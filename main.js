@@ -14,7 +14,10 @@ for (let l = 0; l < retrievedListItems.length; l++){
     console.log(retrievedListItems[l]);
     var node = document.createElement("LI");
     var listItem = document.createTextNode(retrievedListItems[l]);
-    node.appendChild(listItem);
+    var itemContainer = document.createElement("div");
+    itemContainer.setAttribute('class','item');
+    itemContainer.appendChild(listItem);
+    node.appendChild(itemContainer);
     var icons = document.createElement("div");
     icons.setAttribute('class','icons');
     var binIcon = document.createElement("img");
@@ -85,7 +88,7 @@ function changeCheckImgPerm(e) {
         clickHappened = true;
     } else {
         e.target.src = "http://localhost/to-do-list/unchecked.png";
-        e.target.parentElement.parentElement.firstChild.setAttribute("id", "somethingrandom");
+        e.target.parentElement.parentElement.firstChild.setAttribute("id", "");
         clickHappened = true;
     }
 }
