@@ -6,6 +6,19 @@ placeholder.textContent = "Add a new item";
 var theBin = document.getElementsByClassName("bin-closed");
 var theChecks = document.getElementsByClassName("checkButton");
 var clickHappened = false;
+//var storedListItems = [];
+var retrievedListItems = JSON.parse(localStorage.getItem("storedListItems"));
+
+// Display all of the list items retrieved from local storage
+
+//console.log(retrievedListItems);
+for (let l = 0; l < retrievedListItems.length; l++){
+    console.log(retrievedListItems[l]);
+    var node = document.createElement("LI");
+    var listItem = document.createTextNode(retrievedListItems[l]);
+    node.appendChild(listItem);
+    theList.appendChild(node);
+}
 
 
 // Adding new items to the list
@@ -13,6 +26,7 @@ inserter.oninput = function() {
     var newItem = inserter.value;
     placeholder.textContent = newItem;
     theList.appendChild(placeholder);
+    
 }
 
 inserter.onchange = function() {
@@ -22,6 +36,10 @@ inserter.onchange = function() {
     theList.appendChild(createNewLi);
     inserter.value = "";
     placeholder.textContent = "Add a new item";
+    // add the new list item to the array
+    retrievedListItems.push(newItem);
+    // update local storage with the new array
+    localStorage.setItem("storedListItems", JSON.stringify(retrievedListItems));
 }
 
 // Event handlers for the bin icon
