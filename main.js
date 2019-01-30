@@ -64,9 +64,14 @@ for (let i=0; i<theBin.length; i++){
         let listItem = e.target.parentElement.parentElement;
         theList.removeChild(listItem);
         // update the array to remove the clicked item
+        let arrVal = listItem.textContent;
+        console.log(arrVal);
+        for (let i = 0; i < retrievedListItems.length; i++){
+            if (retrievedListItems[i] === arrVal) {
+                retrievedListItems.splice(i, 1);
+            }
+        }
         
-        
-       // retrievedListItems.shift(listItem);
         // update local storage with the new array
         localStorage.setItem("storedListItems", JSON.stringify(retrievedListItems));
     }
