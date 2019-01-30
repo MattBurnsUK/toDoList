@@ -5,6 +5,8 @@ placeholder.setAttribute("id", "placeholderLi");
 placeholder.textContent = "Add a new item";
 var theBin = document.getElementsByClassName("bin-closed");
 var theChecks = document.getElementsByClassName("checkButton");
+var clickHappened = false;
+
 
 // Adding new items to the list
 inserter.oninput = function() {
@@ -36,32 +38,37 @@ for (let i=0; i<theBin.length; i++){
     }
 }
 
-//Functions for the image event handlers
-
-function changeCheckImg(e) {
-    console.log(e.target.src);
-    if (e.target.src == "http://localhost/to-do-list/unchecked.png") {
-        e.target.src = "http://localhost/to-do-list/checked.png";
-    } else {
-        if (e.target.parentElement.parentElement.firstChild.getAttribute("id") != "http://localhost/to-do-list/checked.png") {
-        e.target.src = "http://localhost/to-do-list/unchecked.png";
-        }
-    }
-}
-
+// Setting up the event functions for the check/uncheck icon
 
 function changeCheckImgPerm(e) {
-  // e.target.removeEventListener("mouseleave", changeCheckImg);
-    if (e.target.src == "http://localhost/to-do-list/unchecked.png"){
-        e.target.src = "http://localhost/to-do-list/checked.png";
+    if (e.target.src == "http://localhost/to-do-list/checked.png"){
         e.target.parentElement.parentElement.firstChild.setAttribute("id", "checked");
+        clickHappened = true;
     } else {
         e.target.src = "http://localhost/to-do-list/unchecked.png";
         e.target.parentElement.parentElement.firstChild.setAttribute("id", "somethingrandom");
+        clickHappened = true;
     }
 }
 
-//Applying the image event listeners
+function changeCheckImg(e) {
+    (clickHappened) ? clickReset(e) : doChangeImg(e);
+}
+
+function clickReset(e) {
+    clickHappened = false;
+}
+
+function doChangeImg(e) {
+     if (e.target.src == "http://localhost/to-do-list/unchecked.png") {
+        e.target.src = "http://localhost/to-do-list/checked.png";
+    } else {
+        e.target.src = "http://localhost/to-do-list/unchecked.png";
+    }
+}
+
+// Apply the event listeners to all check images
+
 for (let i=0; i<theChecks.length; i++){
     theChecks[i].addEventListener("mouseover", changeCheckImg);
     theChecks[i].addEventListener("mouseleave", changeCheckImg);
