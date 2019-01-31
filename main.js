@@ -11,9 +11,9 @@ var retrievedListItems = JSON.parse(localStorage.getItem("storedListItems"));
 
 // Display all of the list items retrieved from local storage
 for (let l = 0; l < retrievedListItems.length; l++){
-    console.log(retrievedListItems[l]);
+    //console.log(retrievedListItems[l]);
     var node = document.createElement("LI");
-    var listItem = document.createTextNode(retrievedListItems[l]);
+    var listItem = document.createTextNode(retrievedListItems[l][0]);
     var itemContainer = document.createElement("div");
     itemContainer.setAttribute('class','item');
     itemContainer.appendChild(listItem);
@@ -24,7 +24,15 @@ for (let l = 0; l < retrievedListItems.length; l++){
     var checkIcon = document.createElement("img");
     binIcon.setAttribute('src', 'bin-closed.png');
     binIcon.setAttribute('class','bin-closed');
-    checkIcon.setAttribute('src','http://localhost/to-do-list/unchecked.png');
+    
+    //check the array to see if the icon has been checked and set src to correct img
+    if (retrievedListItems[l][1] === true) {
+        checkIcon.setAttribute('src', "http://localhost/to-do-list/checked.png")
+        itemContainer.setAttribute("id", "checked");
+    } else {
+        checkIcon.setAttribute('src', "http://localhost/to-do-list/unchecked.png")
+    }
+    
     checkIcon.setAttribute('class','checkButton');
     icons.appendChild(binIcon);
     icons.appendChild(checkIcon);
@@ -44,15 +52,33 @@ inserter.oninput = function() {
 
 inserter.onchange = function() {
     var newItem = inserter.value;
-    var createNewLi = document.createElement("LI");
-    createNewLi.textContent = newItem; 
-    theList.appendChild(createNewLi);
+    var node = document.createElement("LI");
+    var listItem = document.createTextNode(newItem);
+    var itemContainer = document.createElement("div");
+    itemContainer.setAttribute('class','item');
+    itemContainer.appendChild(listItem);
+    node.appendChild(itemContainer);
+    var icons = document.createElement("div");
+    icons.setAttribute('class','icons');
+    var binIcon = document.createElement("img");
+    var checkIcon = document.createElement("img");
+    binIcon.setAttribute('src', 'bin-closed.png');
+    binIcon.setAttribute('class','bin-closed');
+    checkIcon.setAttribute('class','checkButton');
+    checkIcon.setAttribute('src', "http://localhost/to-do-list/unchecked.png")
+    icons.appendChild(binIcon);
+    icons.appendChild(checkIcon);
+    node.appendChild(icons);
+    node.setAttribute('class','list-item');
+    theList.appendChild(node);
     inserter.value = "";
     placeholder.textContent = "Add a new item";
     // add the new list item to the array
-    retrievedListItems.push(newItem);
+    retrievedListItems.push([newItem, false]);
     // update local storage with the new array
     localStorage.setItem("storedListItems", JSON.stringify(retrievedListItems));
+    updateEventListeners();
+    
 }
 
 // Event handlers for the bin icon
@@ -70,7 +96,7 @@ for (let i=0; i<theBin.length; i++){
         let arrVal = listItem.textContent;
         console.log(arrVal);
         for (let i = 0; i < retrievedListItems.length; i++){
-            if (retrievedListItems[i] === arrVal) {
+            if (retrievedListItems[i][0] === arrVal) {
                 retrievedListItems.splice(i, 1);
             }
         }
@@ -86,11 +112,27 @@ function changeCheckImgPerm(e) {
     if (e.target.src == "http://localhost/to-do-list/checked.png"){
         e.target.parentElement.parentElement.firstChild.setAttribute("id", "checked");
         clickHappened = true;
+        
+        for (let l = 0; l < retrievedListItems.length; l++){
+            if (retrievedListItems[l][0] === e.target.parentElement.parentElement.firstChild.textContent)
+                 {
+                retrievedListItems[l][1] = true;
+            }
+        }
+
     } else {
         e.target.src = "http://localhost/to-do-list/unchecked.png";
         e.target.parentElement.parentElement.firstChild.setAttribute("id", "");
         clickHappened = true;
+        
+        for (let l = 0; l < retrievedListItems.length; l++){
+            if (retrievedListItems[l][0] === e.target.parentElement.parentElement.firstChild.textContent) {
+                retrievedListItems[l][1] = false;
+            }
+        }
     }
+    // update local storage
+        localStorage.setItem("storedListItems", JSON.stringify(retrievedListItems));
 }
 
 function changeCheckImg(e) {
@@ -111,8 +153,10 @@ function doChangeImg(e) {
 
 // Apply the event listeners to all check images
 
-for (let i=0; i<theChecks.length; i++){
-    theChecks[i].addEventListener("mouseover", changeCheckImg);
-    theChecks[i].addEventListener("mouseleave", changeCheckImg);
-    theChecks[i].addEventListener("click", changeCheckImgPerm);
+function updateEventListeners () {
+    for (let i=0; i<theChecks.length; i++){
+        theChecks[i].addEventListener("mouseover", changeCheckImg);
+        theChecks[i].addEventListener("mouseleave", changeCheckImg);
+        theChecks[i].addEventListener("click", changeCheckImgPerm);
+    }
 }
