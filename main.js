@@ -6,7 +6,6 @@ placeholder.textContent = "Add a new item";
 var theBin = document.getElementsByClassName("bin-closed");
 var theChecks = document.getElementsByClassName("checkButton");
 var clickHappened = false;
-//var storedListItems = [];
 var retrievedListItems = JSON.parse(localStorage.getItem("storedListItems"));
 
 // Display all of the list items retrieved from local storage
@@ -39,6 +38,7 @@ for (let l = 0; l < retrievedListItems.length; l++){
     node.appendChild(icons);
     node.setAttribute('class','list-item');
     theList.appendChild(node);
+    updateEventListeners();
 }
 
 
@@ -71,39 +71,39 @@ inserter.onchange = function() {
     node.appendChild(icons);
     node.setAttribute('class','list-item');
     theList.appendChild(node);
-    inserter.value = "";
-    placeholder.textContent = "Add a new item";
+    
     // add the new list item to the array
     retrievedListItems.push([newItem, false]);
     // update local storage with the new array
     localStorage.setItem("storedListItems", JSON.stringify(retrievedListItems));
     updateEventListeners();
-    
+    inserter.value = "";
+    placeholder.textContent = "";
 }
 
-// Event handlers for the bin icon
-for (let i=0; i<theBin.length; i++){
-    theBin[i].onmouseover = function(e){
-        e.target.src = "bin-open.png";
-    }
-    theBin[i].onmouseleave = function(e){
-        e.target.src = "bin-closed.png";
-    }
-    theBin[i].onclick = function(e){
-        let listItem = e.target.parentElement.parentElement;
-        theList.removeChild(listItem);
-        // update the array to remove the clicked item
-        let arrVal = listItem.textContent;
-        console.log(arrVal);
-        for (let i = 0; i < retrievedListItems.length; i++){
-            if (retrievedListItems[i][0] === arrVal) {
-                retrievedListItems.splice(i, 1);
-            }
+function binHover(e){
+    console.log(e.target.src);
+    e.target.src = "bin-open.png";
+}
+
+function binHoverLeave(e){
+    e.target.src = "bin-closed.png";
+}
+
+function binClick(e){
+    let listItem = e.target.parentElement.parentElement;
+    theList.removeChild(listItem);
+    // update the array to remove the clicked item
+    let arrVal = listItem.textContent;
+    //console.log(arrVal);
+    for (let i = 0; i < retrievedListItems.length; i++){
+        if (retrievedListItems[i][0] === arrVal) {
+            retrievedListItems.splice(i, 1);
         }
-        
-        // update local storage with the new array
-        localStorage.setItem("storedListItems", JSON.stringify(retrievedListItems));
     }
+
+    // update local storage with the new array
+    localStorage.setItem("storedListItems", JSON.stringify(retrievedListItems));
 }
 
 // Setting up the event functions for the check/uncheck icon
@@ -151,12 +151,17 @@ function doChangeImg(e) {
     }
 }
 
-// Apply the event listeners to all check images
+// Apply the event listeners to all check images and bins
 
 function updateEventListeners () {
     for (let i=0; i<theChecks.length; i++){
         theChecks[i].addEventListener("mouseover", changeCheckImg);
         theChecks[i].addEventListener("mouseleave", changeCheckImg);
         theChecks[i].addEventListener("click", changeCheckImgPerm);
+    }
+    for (let j=0; j<theBin.length; j++){
+        theBin[j].addEventListener("mouseover", binHover);
+        theBin[j].addEventListener("mouseleave", binHoverLeave);
+        theBin[j].addEventListener("click", binClick);
     }
 }
