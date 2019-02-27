@@ -20,14 +20,17 @@ ul {
 li {
     border: 1px;
     border-style: solid;
-    border-color: black;
-    margin:5px;
+    border-color: darkgray;
+    box-shadow: 1px 3px 2px #888888;
+    margin: 5px;
+    font-size: 16px;
 }
 
 li .checked
 
-header {
-    background-color: #25AE88;
+.add-icon{
+    width: 80px;
+    height: 80px;
 }
 
 h1 {
@@ -36,22 +39,43 @@ h1 {
 }
 
 .header {
-    border-bottom: 5px;
+    border-bottom: 1px;
     border-bottom-style:solid;
-    border-color: darkgrey;
-    background-color: #25AE88;
+    border-radius: 20px;
+    background-image: url(backgroundGrad.jpg);
+   /* background-color: #25AE88; */
 }
 
+#addNewItem {
+    width: 70%;
+    opacity: 0.5;
+    padding: 20px;
+    height: 30px;
+    border-radius: 25px;
+    margin: 20px;
+    padding-right: 50px;
+}
 
+.add-icon {
+    height: 70px;
+    margin-top: 20px;
+    margin-left: -50px;
+    z-index: 2;
+}
 
 
 .list-wrapper {
-
+    background: white;
 }
 
 .the-list {
-    
+    width: 100%;
 }
+
+form {
+    display: flex;
+}
+
 
 .list-items-container {
     padding:10px;
@@ -84,25 +108,28 @@ h1 {
 
 
 
-@media screen and (max-width:600px) {
-    .the-list {
-    width:100%;
-    }
-}
+
 
 @media screen and (min-width:601px) {
-    head {
+    header {
+        width: 100%;
         background-image: url(backgroundGrad.jpg);
     }
+    
+    .head-wrap {
+        width: 550px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    
     .the-list {
         width:550px;
         margin-left: auto;
         margin-right: auto;
     }
+    
     .list-wrapper {
         width:100%;
-        height:100%;
-        background-image: url(backgroundGrad.jpg);
-        
+        height:100%;        
     }
 }
