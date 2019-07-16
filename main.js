@@ -6,13 +6,14 @@ placeholder.textContent = "Add a new item";
 var theBin = document.getElementsByClassName("bin-closed");
 var theChecks = document.getElementsByClassName("checkButton");
 var clickHappened = false;
-var retrievedListItems = JSON.parse(localStorage.getItem("storedListItems"));
+var retrievedListItems = JSON.parse(localStorage.getItem("storedListItems")) || [["make to do list app", true],["fly to Vancouver", true],["get dream job", false],["eat putine every day", false]];
 
 // Display all of the list items retrieved from local storage
 for (let l = 0; l < retrievedListItems.length; l++){
     //console.log(retrievedListItems[l]);
     var node = document.createElement("LI");
     var listItem = document.createTextNode(retrievedListItems[l][0]);
+    console.log (listItem);
     var itemContainer = document.createElement("div");
     itemContainer.setAttribute('class','item');
     itemContainer.appendChild(listItem);
@@ -26,10 +27,10 @@ for (let l = 0; l < retrievedListItems.length; l++){
     
     //check the array to see if the icon has been checked and set src to correct img
     if (retrievedListItems[l][1] === true) {
-        checkIcon.setAttribute('src', "http://localhost/to-do-list/checked.png")
+        checkIcon.setAttribute('src', "/checked.png")
         itemContainer.setAttribute("id", "checked");
     } else {
-        checkIcon.setAttribute('src', "http://localhost/to-do-list/unchecked.png")
+        checkIcon.setAttribute('src', "/unchecked.png")
     }
     
     checkIcon.setAttribute('class','checkButton');
